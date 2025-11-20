@@ -1,5 +1,7 @@
-//José Arturo Mitre García
-//A00228334
+// José Arturo Mitre García A00228334
+// Alejandro Moctezuma Manrique A01614778
+// Isaac Esaú Vega Reynaga A01647044
+
 #ifndef MYHASHTABLE_H
 #define MYHASHTABLE_H
 #include "MyLinkedList.h"
