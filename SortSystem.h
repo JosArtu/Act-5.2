@@ -8,6 +8,8 @@
 #include "FailedRequest.h"
 #include "MyLinkedList.h"
 
+class MyLinkedList;
+
 class SortSystem{
     private:
         MyLinkedList* requests;

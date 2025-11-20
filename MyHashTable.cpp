@@ -31,18 +31,19 @@ void MyHashTable::rehashing(){
     this->sizeA = this->sizeA*2 +1;
     MyLinkedList* oldTabla = this->tabla;
     MyLinkedList* newTabla = new MyLinkedList[this->sizeA];
-    string key, data;
+    string key;
+    MyLinkedList* ipDates;
     int pos;
     
     for (int i = 0; i < oldSizeA; i++){
         int lenght = oldTabla[i].length();
         for (int j = 0; j < lenght; j++){
             key = oldTabla[i].getKey(j);
-            data = oldTabla[i].getDate(j);
+            ipDates = oldTabla[i].getIpDatesInfo(key);
 
             pos = this->getPos(key);
 
-            newTabla[pos].insertLast(oldTabla[i].getAt(j));
+            newTabla[pos].insertLast(key, ipDates);
         }
         
     }
@@ -53,8 +54,10 @@ void MyHashTable::rehashing(){
 void MyHashTable::put(FailedRequest* request){
     int pos = this->getPos(request->getIp());
 
-    this->tabla[pos].insertLast(request);
-    this->size++;
+    bool notRepeated = this->tabla[pos].insertIpLast(request);
+    if (notRepeated){
+        this->size++;
+    }
     if (double(this->size)/double(this->sizeA) > 0.75){
         this->rehashing();
     }
@@ -75,12 +78,9 @@ bool MyHashTable::isEmpty(){
 }
 
 void MyHashTable::sortLists(){
-    SortSystem* sort = new SortSystem();
-
     for (int i = 0; i < sizeA; i++){
         if(this->tabla[i].length() != 0){
-            sort->sortList(&tabla[i]);
+            tabla[i].sortIpDates();
         }
     }
-    delete sort;
 }
