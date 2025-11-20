@@ -3,18 +3,13 @@
 // Isaac Esaú Vega Reynaga A01647044
 
 #include "MyLinkedList.h"
+#include <iostream>
 #include <stdexcept>
 
 using namespace std;
 
 //Complejidad: O(1)
 MyLinkedList::MyLinkedList(){
-    this->size = 0;
-    this->head = nullptr;
-    this->tail = nullptr;
-}
-//Complejidad: O(1)
-MyLinkedList::MyLinkedList(int len):lens(len){
     this->size = 0;
     this->head = nullptr;
     this->tail = nullptr;
@@ -30,13 +25,20 @@ MyLinkedList::~MyLinkedList(){
         actualNode = nextNode;
     }
 }
+//Complejidad: O(n)
+void MyLinkedList::flushRequests(){
+    MyNodoLL* actualNode = head;
+    MyNodoLL* nextNode;
+    for (int i = 0; i < this->size; i++)
+    {
+        nextNode = actualNode->next;
+        delete actualNode->request;
+        actualNode = nextNode;
+    }
+}
 //Complejidad: O(1)
 int MyLinkedList::length(){
     return this->size;
-}
-//Complejidad: O(1)
-int MyLinkedList::len(){
-    return this->lens;
 }
 //Complejidad: O(n)
 MyNodoLL* MyLinkedList::getAtNode(int pos){
@@ -55,17 +57,21 @@ FailedRequest* MyLinkedList::getAt(int pos){
     return actualNode->request;
 }
 //Complejidad: O(n)
-string MyLinkedList::getAt(string ipKey){
+void MyLinkedList::getAt(string ipKey){
     MyNodoLL* current = this->head;
+    bool keyExists = false;
 
     while (current != nullptr){
-        if(current->ipKey == ipKey){
-            return current->ipData;
+        if(current->request->getIp() == ipKey){
+            cout << current->request->getDate() << "\n";
+            keyExists = true;
         }
         current = current->next;
     }
-    throw invalid_argument("La llave " + ipKey + " no existe.");
-    
+    if (!keyExists)
+    {
+        throw invalid_argument("La llave " + ipKey + " no existe.");
+    }
 }
 //Complejidad: O(1)
 void MyLinkedList::insertLast(double days, string time, string ip, string reason, string month, string date){
@@ -94,33 +100,6 @@ void MyLinkedList::insertLast(FailedRequest* request){
     }
     this->size++;
 }
-//Complejidad: O(1)
-void MyLinkedList::insertLast(string ip, int accessNumber){
-    if (this->size == 0){
-        head = new MyNodoLL(ip, accessNumber);
-        tail = head;
-    }
-    else{
-        MyNodoLL* newNode = new MyNodoLL(ip, accessNumber);
-        this->tail->next = newNode;
-        this->tail = newNode;
-    }
-    this->size++;
-}
-
-//Complejidad: O(1)
-void MyLinkedList::insertLast(string data, string key){
-    if (this->size == 0){
-        head = new MyNodoLL(key, data);
-        tail = head;
-    }
-    else{
-        MyNodoLL* newNode = new MyNodoLL(key, data);
-        this->tail->next = newNode;
-        this->tail = newNode;
-    }
-    this->size++;
-}
 
 //Complejidad: O(n)
 string MyLinkedList::getKey(int pos){
@@ -130,62 +109,23 @@ string MyLinkedList::getKey(int pos){
     if (this->size <= pos || pos < 0){
         throw invalid_argument("Posicion invalida/fuera de rango");
     }
-    MyNodoLL* actualNode = head;
+    MyNodoLL* actualNode = this->head;
     for (int i = 0; i < pos; i++){
         actualNode = actualNode->next;
     }
-    return actualNode->ipKey;
+    return actualNode->request->getIp();
 }
-//Complejidad: Peor de los casos: O(n), mejor de los casos: O(1)
-void MyLinkedList::removeAt(string ipKey){
+//Complejidad: O(n)
+string MyLinkedList::getDate(int pos){
     if (this->size == 0){
         throw invalid_argument("La lista esta vacia");
     }
-    else{
-        MyNodoLL* current = head;
-        MyNodoLL* nextNode;
-        int pos = 0;
-
-        while(current != nullptr){
-            if (current->next != nullptr && current->next->ipKey == ipKey){
-                if (current->next->next == nullptr){
-                    delete tail;
-                    tail = current;
-                    tail->next = nullptr;
-                }
-                else{
-                    nextNode = current->next;
-                    current->next = current->next->next;
-                    delete nextNode;
-                }
-                this->size--;
-                if (this->size == 1){
-                    tail = head;
-                }
-                else if(this->size == 0){
-                    tail = nullptr;
-                    head = nullptr;
-                }
-                return;
-            }
-            else if (current->ipKey == ipKey){
-                MyNodoLL* temp = head;
-                nextNode = head->next;
-                delete temp;
-                head = nextNode;
-                this->size--;
-                if (this->size == 1){
-                    tail = head;
-                }
-                if (this->size == 0){
-                    tail = nullptr;
-                    head = nullptr;
-                }
-                return;
-            }
-            current = current->next;
-            pos++;
-        }
-        throw invalid_argument("La llave " + ipKey + " no existe");
+    if (this->size <= pos || pos < 0){
+        throw invalid_argument("Posicion invalida/fuera de rango");
     }
+    MyNodoLL* actualNode = this->head;
+    for (int i = 0; i < pos; i++){
+        actualNode = actualNode->next;
+    }
+    return actualNode->request->getDate();
 }

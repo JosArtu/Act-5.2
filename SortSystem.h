@@ -10,9 +10,9 @@
 
 class SortSystem{
     private:
-    MyLinkedList* requests;
+        MyLinkedList* requests;
     public:
-        SortSystem(MyLinkedList* requests);
+        void sortList(MyLinkedList* requests);
         void mergeSort(int start, int end);
         void merge(int start, int end);
 };

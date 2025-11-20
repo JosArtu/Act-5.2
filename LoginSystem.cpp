@@ -14,7 +14,7 @@ LoginSystem::LoginSystem(){
     string time, ip, reason, month;
     FileLocation = "bitacora3.txt";
     ifstream rawFile(FileLocation);
-    lista = new MyLinkedList();
+    this->searchRequests = new SearchSystem();
 
     while (!rawFile.eof()){
         rawFile >> month;
@@ -25,46 +25,13 @@ LoginSystem::LoginSystem(){
         getline(rawFile, reason);
         reason.erase(0, 1);
 
-        lista->insertLast(days, time, ip, reason, month, month + " " + to_string(days) + " " + time);
+        this->searchRequests->insertRequest(new FailedRequest(month, days, time, ip, reason));
     }
-    
-    cout << "Sorting..." << endl;
-    sortRequests = new SortSystem(lista);
-    cout << "Sorted\n" << endl;
-    delete sortRequests;
-    cout << "Inserting IPs in Hashmap..." << endl;
-    searchRequests = new SearchSystem(lista);
-    cout << "Finished\n" << endl;
 
-
-    ofstream sortedFile("bitacoraOrdenadaIP-eq8-Act5.4.txt");
-
-    MyNodoLL* actualNode = lista->getAtNode(0);
-    int n = lista->length();
-    for (int i = 0; i < n; i++){
-        sortedFile << actualNode->request->getMonth() << " ";
-        sortedFile << actualNode->request->getDay() << " ";
-        sortedFile << actualNode->request->getTime() << " ";
-        sortedFile << actualNode->request->getIp() << " ";
-        sortedFile << actualNode->request->getReason();
-
-        if(i != n - 1){
-            sortedFile << "\n";
-            actualNode = actualNode->next;
-        }
-    }
+    this->searchRequests->sortRequests();
 }
 //Complejidad O(n)
 LoginSystem::~LoginSystem(){
-    MyNodoLL* actualNode = lista->getAtNode(0);
-    MyNodoLL* nextNode;
-    int n = lista->length();
-    for (int i = 0; i < n; i++){
-        nextNode = actualNode->next;
-        delete actualNode->request;
-        actualNode = nextNode;
-    }
-    delete lista;
     delete searchRequests;
 }
 //Complejidad: O(n, N), donde la n es la cantidad de top IPs que se piden y  la N seria los nodos del arbol, cuando el usuario pone 

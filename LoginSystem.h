@@ -8,7 +8,6 @@
 #include <iostream>
 #include "FailedRequest.h"
 #include "MyLinkedList.h"
-#include "SortSystem.h"
 #include "SearchSystem.h"
 #include <fstream>
 
@@ -16,9 +15,7 @@ using namespace std;
 
 class LoginSystem{
     private:
-        MyLinkedList* lista;
         string FileLocation;
-        SortSystem *sortRequests;
         SearchSystem *searchRequests;
     public:
         LoginSystem();

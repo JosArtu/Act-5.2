@@ -5,16 +5,20 @@
 //Complejidad O(1)
 MyHashTable::MyHashTable(){
     this->size=0;
-    this->sizeA=16807;
+    this->sizeA=601;
     this->tabla=new MyLinkedList[this->sizeA];
 }
 //Complejidad: O(1)
 MyHashTable::~MyHashTable(){
-    delete[] tabla;
+    for (int i = 0; i < sizeA; i++){
+        this->tabla[i].flushRequests();
+    }
+    delete[] this->tabla;
+    
 }
 //Complejidad(O(1))
-int MyHashTable::getPos(string key){
-    size_t hashC=hash<string>{}(key);
+int MyHashTable::getPos(string ipKey){
+    size_t hashC=hash<string>{}(ipKey);
     int hashCode=static_cast<int>(hashC);
     return abs(hashCode)%this->sizeA;
 }
@@ -34,11 +38,11 @@ void MyHashTable::rehashing(){
         int lenght = oldTabla[i].length();
         for (int j = 0; j < lenght; j++){
             key = oldTabla[i].getKey(j);
-            data = oldTabla[i].getAt(key);
+            data = oldTabla[i].getDate(j);
 
             pos = this->getPos(key);
 
-            newTabla[pos].insertLast(data, key);
+            newTabla[pos].insertLast(oldTabla[i].getAt(j));
         }
         
     }
@@ -46,31 +50,20 @@ void MyHashTable::rehashing(){
     delete[] oldTabla;
 }
 //Complejidad: O(1), O(n) si rehash
-void MyHashTable::put(string ipKey, string ipData){
-    int pos = this->getPos(ipKey);
+void MyHashTable::put(FailedRequest* request){
+    int pos = this->getPos(request->getIp());
 
-    this->tabla[pos].insertLast(ipData, ipKey);
+    this->tabla[pos].insertLast(request);
     this->size++;
     if (double(this->size)/double(this->sizeA) > 0.75){
         this->rehashing();
     }
 }
 //Complejidad: O(1) mejor caso, O(n) peor caso
-string MyHashTable::get(string key){
-    int pos = this->getPos(key);
+void MyHashTable::get(string ipKey){
+    int pos = this->getPos(ipKey);
     try{
-        return this->tabla[pos].getAt(key);
-    }
-    catch(const std::exception& e){
-        cout << e.what() << '\n';
-        return "";
-    }
-}
-//Complejidad: O(1), O(n) peor caso
-void MyHashTable::remove(string key){
-    int pos = this->getPos(key);
-    try{
-        this->tabla[pos].removeAt(key);
+        this->tabla[pos].getAt(ipKey);
     }
     catch(const std::exception& e){
         cout << e.what() << '\n';
@@ -79,4 +72,15 @@ void MyHashTable::remove(string key){
 //Complejidad: O(1)
 bool MyHashTable::isEmpty(){
     return this->size == 0;
+}
+
+void MyHashTable::sortLists(){
+    SortSystem* sort = new SortSystem();
+
+    for (int i = 0; i < sizeA; i++){
+        if(this->tabla[i].length() != 0){
+            sort->sortList(&tabla[i]);
+        }
+    }
+    delete sort;
 }

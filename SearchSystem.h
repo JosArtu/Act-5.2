@@ -11,12 +11,12 @@
 class SearchSystem{
     private:
         MyHashTable* tabla;
-        MyLinkedList* bitacora;
-        void printRequests(MyLinkedList* lista);
     public:
-        SearchSystem(MyLinkedList* bitacora);
+        SearchSystem();
         ~SearchSystem();
+        void insertRequest(FailedRequest* request);
         void searchRequest(string ipKey);
+        void sortRequests();
 };
 
 #endif

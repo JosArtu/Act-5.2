@@ -8,75 +8,34 @@
 // Referencias: https://www.geeksforgeeks.org/cpp/stdstringerase-in-cpp/ Uso de erase
 // Referencias: https://www.geeksforgeeks.org/cpp/std-find-in-cpp/ Uso de find
 // Complejidad O(1)
-FailedRequest::FailedRequest(string month, double days, string time, string ip, string reason, string date){
-    this->month = month;
-    this->days = days;
-    this->time = time;
+FailedRequest::FailedRequest(string month, int days, string time, string ip, string reason){
     this->ip = ip;
     this->reason = reason;
-    this->date = date;
-    string ipCopy = ip;
+    this->date = to_string(days) + " " + month + " " + time;
     int pos;
-
-    pos = ipCopy.find(".");
-    double ipNumber1 = stoi(ipCopy.substr(0,pos));
-    ipCopy.erase(0,pos+1);
-
-    pos = ipCopy.find(".");
-    double ipNumber2 = stoi(ipCopy.substr(0, pos));
-    ipCopy.erase(0,pos+1);
-
-    pos = ipCopy.find(".");
-    double ipNumber3 = stoi(ipCopy.substr(0, pos));
-    ipCopy.erase(0,pos+1);
-
-    pos = ipCopy.find(":");
-    double ipNumber4 = stoi(ipCopy.substr(0, pos));
-    ipCopy.erase(0,pos+1);
-
-    double port = stoi(ipCopy);
-
-    this->ipSortValue = 0;
-    this->ipSortValue += ipNumber1;  
-    this->ipSortValue += ipNumber2/1000.00;
-    this->ipSortValue += ipNumber3/1000000.00;
-    this->ipSortValue += ipNumber4/1000000000.00;
-    this->ipSortValue += port/10000000000000.00;
-
     string timeCopy = time;
+
     pos = timeCopy.find(":");
     double hours = stoi(timeCopy.substr(0, pos));
-    ipCopy.erase(0,pos+1);
+    timeCopy.erase(0,pos+1);
 
     pos = timeCopy.find(":");
     double minutes = stoi(timeCopy.substr(0, pos));
-    ipCopy.erase(0,pos+1);
+    timeCopy.erase(0,pos+1);
 
     pos = timeCopy.find(":");
-    double seconds = stoi(timeCopy.substr(0, pos));ipCopy.erase(0,pos+1);
+    double seconds = stoi(timeCopy.substr(0, pos));
+    timeCopy.erase(0,pos+1);
 
     this->totalDays = 0;
     this->totalDays += monthConvertor(month);
-    this->totalDays += days;
+    this->totalDays += double(days);
     this->totalDays += hours/24;
     this->totalDays += (minutes/60)/24;
     this->totalDays += ((seconds/60)/60)/24;
-}
-//Complejidad O(1)
-double FailedRequest::getDay(){
-    return this->days;
-}
-//Complejidad O(1)
-string FailedRequest::getMonth(){
-    return this->month;
-}
-//Complejidad O(1)
-string FailedRequest::getTime(){
-    return this->time;
-}
-//Complejidad O(1)
-double FailedRequest::getIpSortValue(){
-    return this->ipSortValue;
+
+    pos = this->ip.find(":");
+    this->ip.erase(pos);
 }
 //Complejidad O(1)
 string FailedRequest::getIp(){

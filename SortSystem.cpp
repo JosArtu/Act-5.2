@@ -5,10 +5,12 @@
 #include "SortSystem.h"
 
 //Complejidad O(n log n)
-SortSystem::SortSystem(MyLinkedList* requests):requests(requests){
+void SortSystem::sortList(MyLinkedList* requests){
+    this->requests = requests;
     int end = requests->length();
     mergeSort(0, end - 1);
 }
+
 //Complejidad O(n log n)
 void SortSystem::mergeSort(int start, int end){
     if(start<end){
@@ -29,7 +31,7 @@ void SortSystem::merge(int start, int end){
     MyLinkedList arreglo;
 
     while(i <= central && j <= end){
-        if(iNode->request->getIpSortValue() <= jNode->request->getIpSortValue()){
+        if(iNode->request->getTotalDays() >= jNode->request->getTotalDays()){
             arreglo.insertLast(iNode->request);
             iNode = iNode->next;
             i++;
