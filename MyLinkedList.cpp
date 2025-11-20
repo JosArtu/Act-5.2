@@ -29,12 +29,14 @@ MyLinkedList::~MyLinkedList(){
 void MyLinkedList::flushRequests(){
     MyNodoLL* actualNode = head;
     MyNodoLL* nextNode;
-    for (int i = 0; i < this->size; i++)
-    {
+    for (int i = 0; i < this->size; i++){
+        nextNode = actualNode->next;
         if (actualNode->resumenFechas != nullptr){
             actualNode->resumenFechas->flushRequests();
         }
-        delete actualNode->request;
+        if (actualNode->request != nullptr){
+           delete actualNode->request;
+        }
         actualNode = nextNode;
     }
 }

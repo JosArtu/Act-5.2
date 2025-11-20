@@ -15,7 +15,7 @@ class MyLinkedList;
 struct MyNodoLL{
     MyLinkedList* resumenFechas = nullptr;
     MyNodoLL* next;
-    FailedRequest* request;
+    FailedRequest* request = nullptr;
     string ip;
 
     MyNodoLL(double days, string time, string ip, string reason, string month, string date, MyNodoLL* next){
