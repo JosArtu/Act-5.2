@@ -104,7 +104,7 @@ void MyLinkedList::insertLast(FailedRequest* request){
     }
     this->size++;
 }
-
+//Complejidad: O(1)
 void MyLinkedList::insertLast(string ip, MyLinkedList* ipDates){
     if (this->size == 0){
         this->head = new MyNodoLL(ip);
@@ -119,7 +119,7 @@ void MyLinkedList::insertLast(string ip, MyLinkedList* ipDates){
     }
     this->size++;
 };
-
+//Complejidad: Mejor caso: O(1), peor caso: O(n)
 bool MyLinkedList::insertIpLast(FailedRequest* request){
     if (this->size == 0){
         head = new MyNodoLL(request->getIp());
@@ -184,7 +184,7 @@ MyLinkedList* MyLinkedList::getIpDatesInfo(string ipKey){
     }
     throw invalid_argument("La llave " + ipKey + " no existe.");
 }
-
+//Complejidad: O(n log n)
 void MyLinkedList::sortIpDates(){
     MyNodoLL* current = this->head;
     SortSystem sort;

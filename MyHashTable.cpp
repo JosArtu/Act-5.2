@@ -10,7 +10,7 @@ MyHashTable::MyHashTable(){
     this->sizeA=601;
     this->tabla=new MyLinkedList[this->sizeA];
 }
-//Complejidad: O(1)
+//Complejidad: O(n)
 MyHashTable::~MyHashTable(){
     for (int i = 0; i < sizeA; i++){
         this->tabla[i].flushRequests();
@@ -78,7 +78,7 @@ void MyHashTable::get(string ipKey){
 bool MyHashTable::isEmpty(){
     return this->size == 0;
 }
-
+//Complejidad: O(n log n)
 void MyHashTable::sortLists(){
     for (int i = 0; i < sizeA; i++){
         if(this->tabla[i].length() != 0){

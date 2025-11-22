@@ -31,7 +31,7 @@ void SortSystem::merge(int start, int end){
     MyLinkedList arreglo;
 
     while(i <= central && j <= end){
-        if(iNode->request->getTotalDays() >= jNode->request->getTotalDays()){
+        if(iNode->request->getTotalDays() <= jNode->request->getTotalDays()){
             arreglo.insertLast(iNode->request);
             iNode = iNode->next;
             i++;

@@ -34,8 +34,7 @@ LoginSystem::LoginSystem(){
 LoginSystem::~LoginSystem(){
     delete searchRequests;
 }
-//Complejidad: O(n, N), donde la n es la cantidad de top IPs que se piden y  la N seria los nodos del arbol, cuando el usuario pone 
-// n > N, solo va recorrer hasta N y no llenara la lista, solo pondra todos los nodos del arbol en la lista.
+//Complejidad: O(1) Mejor caso, O(n) peor caso
 void LoginSystem::searchIpData(string ipKey){
     this->searchRequests->searchRequest(ipKey);
 }

@@ -4,7 +4,7 @@
 
 #include "SearchSystem.h"
 #include <iostream>
-
+//Complejidad: O(1)
 SearchSystem::SearchSystem(){
     tabla = new MyHashTable();
 }
@@ -15,12 +15,11 @@ SearchSystem::~SearchSystem(){
 void SearchSystem::insertRequest(FailedRequest* request){
     this->tabla->put(request);
 }
-//Complejidad: O(n, N), donde la n es la cantidad de top IPs que se piden y  la N seria los nodos del arbol, cuando el usuario pone 
-// n > N, solo va recorrer hasta N y no llenara la lista, solo pondra todos los nodos del arbol en la lista.
+//Complejidad: O(1) Mejor caso, O(n) peor caso
 void SearchSystem::searchRequest(string ipKey){
     this->tabla->get(ipKey);
 }
-
+//Complejidad: O(1) mejor caso, O(n) peor caso
 void SearchSystem::sortRequests(){
     this->tabla->sortLists();
 }
